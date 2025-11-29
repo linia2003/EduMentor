@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Mission Control // EduMentor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --bg-dark: #0a0e17; --neon-cyan: #00f3ff; --neon-purple: #bc13fe; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--bg-dark); 
+            color: #fff; margin: 0; 
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        
+        /* Navbar */
+        .top-bar {
+            background: rgba(10, 14, 23, 0.9);
+            padding: 20px 50px;
+            border-bottom: 1px solid var(--neon-cyan);
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+        }
+        .logo { font-weight: 700; color: var(--neon-cyan); letter-spacing: 2px; }
+        
+        .container { padding: 50px; max-width: 1000px; margin: 0 auto; }
+        
+        /* Header Section */
+        .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        h2 { font-weight: 400; color: #aaa; text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* New Session Button */
+        .btn-glow {
+            background: var(--neon-purple); color: #fff; padding: 12px 25px;
+            text-decoration: none; border-radius: 5px; font-weight: 600;
+            box-shadow: 0 0 15px rgba(188, 19, 254, 0.5); transition: 0.3s;
+        }
+        .btn-glow:hover { box-shadow: 0 0 25px rgba(188, 19, 254, 0.9); }
+
+        /* Cyberpunk Table */
+        .data-grid {
+            width: 100%; border-collapse: collapse; margin-top: 20px;
+            background: rgba(255,255,255,0.02);
+            backdrop-filter: blur(5px);
+        }
+        .data-grid th {
+            text-align: left; padding: 15px; color: var(--neon-cyan);
+            border-bottom: 1px solid var(--neon-cyan); text-transform: uppercase; font-size: 12px;
+        }
+        .data-grid td {
+            padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.1);
+            color: #ccc; font-size: 14px;
+        }
+        .data-grid tr:hover { background: rgba(0, 243, 255, 0.05); }
+
+        .empty-state { text-align: center; color: #555; margin-top: 50px; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="logo">EDUMENTOR_HUB</div>
+        <div>
+            <span style="color:#888; margin-right: 15px;">OPERATOR: {{ name.upper() }}</span>
+            <a href="/logout" style="color: #ff4d4d; text-decoration: none;">[DISCONNECT]</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header-flex">
+            <h2>Activity Logs</h2>
+            {% if role == 'student' %}
+                <a href="/log_study" class="btn-glow"><i class="fas fa-plus"></i> NEW ENTRY</a>
+            {% endif %}
+        </div>
+
+        {% if logs %}
+        <table class="data-grid">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Subject Protocol</th>
+                    <th>Mentor / Guide</th>
+                    <th>Duration (Hrs)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.study_date }}</td>
+                    <td style="color: white; font-weight: 600;">{{ log.subject_name }}</td>
+                    <td>{{ log.mentor_name }}</td>
+                    <td><span style="color: var(--neon-cyan)">{{ log.duration_hours }} hrs</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <div class="empty-state">NO DATA FOUND // INITIALIZE STUDY SESSION</div>
+        {% endif %}
+    </div>
+</body>
+</html>

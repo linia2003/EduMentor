@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduMentor | Future of Learning</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* --- Cyberpunk Theme Variables --- */
+        :root {
+            --bg-dark: #0a0e17;      /* Deep Space Black */
+            --card-bg: rgba(255, 255, 255, 0.05); /* Glass Effect */
+            --neon-cyan: #00f3ff;    /* Electric Blue */
+            --neon-purple: #bc13fe;  /* Neon Purple */
+            --text-main: #e0e6ed;    /* Off-white */
+            --text-muted: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--bg-dark); 
+            color: var(--text-main); 
+            background-image: radial-gradient(circle at 10% 20%, rgba(188, 19, 254, 0.1) 0%, transparent 20%),
+                              radial-gradient(circle at 90% 80%, rgba(0, 243, 255, 0.1) 0%, transparent 20%);
+            min-height: 100vh;
+        }
+        
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+
+        /* --- Navbar --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 50px;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo { 
+            font-size: 24px; 
+            font-weight: 700; 
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+        }
+        
+        .nav-links a {
+            margin-left: 30px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+        .nav-links a:hover { 
+            color: var(--neon-cyan); 
+            text-shadow: 0 0 10px var(--neon-cyan);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+        }
+        .hero h1 { 
+            font-size: 56px; 
+            margin-bottom: 20px; 
+            font-weight: 700;
+            line-height: 1.1;
+        }
+        .highlight { color: var(--neon-cyan); }
+        
+        .hero p { 
+            font-size: 18px; 
+            color: var(--text-muted); 
+            max-width: 600px; 
+            margin: 0 auto 50px; 
+        }
+
+        /* --- Neon Buttons --- */
+        .btn {
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            display: inline-block;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, var(--neon-cyan), #00d2ff);
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.7);
+            transform: scale(1.05);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--neon-purple);
+            color: var(--neon-purple);
+            margin-left: 15px;
+        }
+        .btn-outline:hover {
+            background: var(--neon-purple);
+            color: #fff;
+            box-shadow: 0 0 30px rgba(188, 19, 254, 0.5);
+        }
+
+        /* --- Features Cards (Glassmorphism) --- */
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 50px 20px;
+            flex-wrap: wrap;
+        }
+        .card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            width: 300px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: left;
+            transition: 0.4s;
+            display: block; /* Ensures links behave like boxes */
+        }
+        .card:hover { 
+            transform: translateY(-10px); 
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.1);
+        }
+        .icon-box {
+            font-size: 30px;
+            color: var(--neon-cyan);
+            margin-bottom: 20px;
+        }
+
+        /* Animated Mini Chart for Data Visuals */
+        .mini-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            height: 40px;
+            width: 50px;
+            margin: 0 auto 20px 0; /* Align left to match icon-box */
+        }
+        .chart-bar {
+            width: 8px;
+            background: var(--neon-cyan);
+            border-radius: 2px 2px 0 0;
+            animation: bar-rise 1s ease-in-out infinite alternate;
+            box-shadow: 0 0 8px var(--neon-cyan);
+        }
+        .chart-bar:nth-child(1) { height: 30%; animation-delay: 0s; background: var(--neon-purple); box-shadow: 0 0 8px var(--neon-purple); }
+        .chart-bar:nth-child(2) { height: 60%; animation-delay: 0.2s; }
+        .chart-bar:nth-child(3) { height: 40%; animation-delay: 0.4s; background: var(--neon-purple); box-shadow: 0 0 8px var(--neon-purple); }
+        .chart-bar:nth-child(4) { height: 80%; animation-delay: 0.1s; }
+
+        @keyframes bar-rise {
+            0% { transform: scaleY(0.8); opacity: 0.7; }
+            100% { transform: scaleY(1.2); opacity: 1; }
+        }
+
+        .card h3 { font-size: 20px; margin-bottom: 10px; color: #fff; }
+        .card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: rgba(255,255,255,0.3);
+            font-size: 12px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo"><i class="fas fa-rocket"></i> EDUMENTOR</div>
+        <div class="nav-links">
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+            <!-- Link to System View removed -->
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>Upgrade Your <br><span class="highlight">Knowledge Base</span></h1>
+        <p>A next-generation system to log data, track analytics, and sync with your mentors.</p>
+        <div>
+            <a href="/login" class="btn btn-primary">Initialize</a>
+            <a href="/subjects" class="btn btn-outline">Explore Data</a>
+        </div>
+    </header>
+
+    <section class="features">
+        <div class="card">
+            <div class="icon-box"><i class="fas fa-bolt"></i></div>
+            <h3>Fast Tracking</h3>
+            <p>Log sessions with high-speed efficiency using our streamlined database inputs.</p>
+        </div>
+
+        <!-- Animated Mentor Sync Card (Clickable) -->
+        <a href="/feedback" class="card">
+            <div class="icon-box"><i class="fas fa-network-wired"></i></div>
+            <h3>Mentor Sync</h3>
+            <p>Establish a direct link with experts to receive real-time qualitative feedback.</p>
+        </a>
+
+        <!-- Animated Data Visuals Card -->
+        <a href="/subjects" class="card">
+            <div class="mini-chart">
+                <div class="chart-bar"></div>
+                <div class="chart-bar"></div>
+                <div class="chart-bar"></div>
+                <div class="chart-bar"></div>
+            </div>
+            <h3>Data Visuals</h3>
+            <p>View your progress through advanced percentage analytics and reporting.</p>
+        </a>
+    </section>
+
+    <footer>
+        SYSTEM ONLINE // EDUMENTOR V1.0 // 2025
+    </footer>
+
+</body>
+</html>

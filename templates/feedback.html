@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Feedback Hub // EduMentor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #0a0e17; color: white; padding: 40px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: rgba(255,255,255,0.05); padding: 30px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        
+        h2 { color: #00f3ff; text-transform: uppercase; border-bottom: 2px solid #00f3ff; display: inline-block; padding-bottom: 5px; }
+        
+        /* Mentor Form */
+        select, textarea, button { width: 100%; padding: 12px; margin-top: 10px; background: #000; border: 1px solid #333; color: white; border-radius: 5px; }
+        button { background: #bc13fe; border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+        button:hover { background: #d052ff; }
+
+        /* Student View */
+        .feedback-item { border-left: 3px solid #bc13fe; padding-left: 15px; margin-bottom: 20px; }
+        .meta { font-size: 12px; color: #888; margin-bottom: 5px; }
+        .comment { font-size: 14px; line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/dashboard" style="color: #888; text-decoration: none;">← Return to Dashboard</a>
+        <br><br>
+
+        {% if session_role == 'mentor' %}
+            <!-- MENTOR VIEW: Write Feedback -->
+            <h2>✍️ Submit Evaluation</h2>
+            <div class="card">
+                <form action="/submit_feedback" method="POST">
+                    <label>Select Student:</label>
+                    <select name="student_id" required>
+                        {% for student in students %}
+                            <option value="{{ student.student_id }}">{{ student.name }} (Sem: {{ student.semester }})</option>
+                        {% endfor %}
+                    </select>
+
+                    <label>Performance Notes:</label>
+                    <textarea name="comments" rows="5" placeholder="Enter detailed feedback here..." required></textarea>
+
+                    <button type="submit">Upload Feedback</button>
+                </form>
+            </div>
+
+            <!-- Mentors can also see their history -->
+            <h3>Your Feedback History</h3>
+            {% for item in history %}
+            <div class="card feedback-item">
+                <div class="meta">To: <strong style="color:white">{{ item.student_name }}</strong> • {{ item.feedback_date }}</div>
+                <div class="comment">{{ item.comments }}</div>
+            </div>
+            {% endfor %}
+
+        {% else %}
+            <!-- STUDENT VIEW: Read Feedback -->
+            <h2>📬 Incoming Transmissions</h2>
+            {% if history %}
+                {% for item in history %}
+                <div class="card feedback-item">
+                    <div class="meta">From: <strong style="color:#00f3ff">{{ item.mentor_name }}</strong> • {{ item.feedback_date }}</div>
+                    <div class="comment">{{ item.comments }}</div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="card" style="text-align: center; color: #555;">No feedback received yet.</div>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html>

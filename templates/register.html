@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register // EduMentor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0e17; --neon-cyan: #00f3ff; --neon-purple: #bc13fe; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-dark);
+            height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; color: #fff;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .form-card {
+            background: rgba(255, 255, 255, 0.05); padding: 40px; border-radius: 15px; width: 350px;
+            backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 30px rgba(188, 19, 254, 0.1);
+        }
+        h2 { color: var(--neon-purple); text-align: center; text-transform: uppercase; letter-spacing: 2px; }
+        input, select {
+            width: 100%; padding: 12px; margin: 8px 0;
+            background: rgba(0,0,0,0.5); border: 1px solid #444; color: white; border-radius: 4px; box-sizing: border-box;
+        }
+        input:focus, select:focus { outline: none; border-color: var(--neon-purple); }
+        button {
+            width: 100%; padding: 12px; background: var(--neon-purple); color: white; border: none;
+            border-radius: 4px; font-weight: 700; margin-top: 15px; cursor: pointer; text-transform: uppercase;
+        }
+        button:hover { box-shadow: 0 0 20px var(--neon-purple); }
+        .links { text-align: center; margin-top: 20px; font-size: 12px; }
+        .links a { color: #aaa; text-decoration: none; }
+        .links a:hover { color: var(--neon-cyan); }
+    </style>
+</head>
+<body>
+    <div class="form-card">
+        <h2>New User Uplink</h2>
+        
+        <form action="/register" method="POST">
+            <input type="text" name="name" placeholder="FULL NAME" required>
+            <input type="email" name="email" placeholder="EMAIL ADDRESS" required>
+            <input type="password" name="password" placeholder="PASSWORD" required>
+            
+            <select name="role" id="roleSelect" onchange="updateLabel()">
+                <option value="student">Role: Student</option>
+                <option value="mentor">Role: Mentor</option>
+            </select>
+
+            <input type="text" name="extra_info" id="extraInput" placeholder="ENTER SEMESTER (e.g. 1, 2, 3)" required>
+
+            <button type="submit">Create ID</button>
+        </form>
+
+        <div class="links">
+            <a href="/login">ALREADY REGISTERED? LOGIN</a>
+        </div>
+    </div>
+
+    <script>
+        function updateLabel() {
+            var role = document.getElementById("roleSelect").value;
+            var input = document.getElementById("extraInput");
+            if (role === "student") {
+                input.placeholder = "ENTER SEMESTER (e.g. 1, 2, 3)";
+            } else {
+                input.placeholder = "ENTER EXPERTISE (e.g. AI, Math)";
+            }
+        }
+    </script>
+</body>
+</html>

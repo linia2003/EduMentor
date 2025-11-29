@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Input Terminal // EduMentor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0e17; --neon-cyan: #00f3ff; --card-bg: rgba(255, 255, 255, 0.05); }
+
+        body { 
+            font-family: 'Poppins', sans-serif; background-color: var(--bg-dark); 
+            color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh;
+        }
+
+        .form-card {
+            background: var(--card-bg); padding: 40px; border-radius: 10px; width: 400px;
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.1);
+        }
+        
+        h2 { color: var(--neon-cyan); text-transform: uppercase; letter-spacing: 2px; text-align: center; }
+
+        label { display: block; margin-top: 15px; color: #aaa; font-size: 12px; letter-spacing: 1px; }
+        
+        select, input {
+            width: 100%; padding: 12px; margin-top: 5px;
+            background: #000; border: 1px solid #333; color: white;
+            border-radius: 4px; box-sizing: border-box;
+        }
+        select:focus, input:focus { outline: none; border-color: var(--neon-cyan); }
+
+        button {
+            width: 100%; padding: 15px; background: var(--neon-cyan); color: #000;
+            border: none; font-weight: 700; margin-top: 25px; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+        }
+        button:hover { box-shadow: 0 0 20px var(--neon-cyan); }
+        
+        .cancel { display: block; text-align: center; margin-top: 20px; color: #555; font-size: 12px; }
+        .cancel:hover { color: #fff; }
+    </style>
+</head>
+<body>
+
+    <div class="form-card">
+        <h2>Log Session Data</h2>
+        
+        <form action="/log_study" method="POST">
+            
+            <label>TARGET SUBJECT</label>
+            <select name="subject" required>
+                {% for sub in subjects %}
+                    <option value="{{ sub.subject_id }}">{{ sub.subject_name }}</option>
+                {% endfor %}
+            </select>
+
+            <label>ASSIGNED MENTOR</label>
+            <select name="mentor" required>
+                {% for m in mentors %}
+                    <option value="{{ m.mentor_id }}">{{ m.name }} ({{ m.expertise_area }})</option>
+                {% endfor %}
+            </select>
+
+            <label>DURATION (HOURS)</label>
+            <input type="number" step="0.5" name="duration" placeholder="e.g. 1.5" required>
+
+            <button type="submit">UPLOAD DATA</button>
+        </form>
+
+        <a href="/dashboard" class="cancel">ABORT & RETURN TO DASHBOARD</a>
+    </div>
+
+</body>
+</html>

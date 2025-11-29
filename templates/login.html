@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login // EduMentor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0e17;
+            --neon-cyan: #00f3ff;
+            --glass-bg: rgba(255, 255, 255, 0.07);
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-dark);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            color: #fff;
+            /* Subtle dark grid background */
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .login-card {
+            background: var(--glass-bg);
+            padding: 50px 40px;
+            border-radius: 15px;
+            width: 340px;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 50px rgba(0, 243, 255, 0.1);
+        }
+        
+        h2 { 
+            color: #fff; 
+            margin-bottom: 30px; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+        }
+
+        input, select {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 5px;
+            background-color: rgba(0,0,0,0.3);
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+            transition: 0.3s;
+        }
+        
+        input:focus, select:focus {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+        }
+
+        /* Styling the dropdown options specifically for dark mode */
+        select option {
+            background-color: #0a0e17;
+            color: white;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: var(--neon-cyan);
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+        button:hover {
+            box-shadow: 0 0 25px var(--neon-cyan);
+        }
+        
+        .error-msg { color: #ff4d4d; font-size: 13px; margin-bottom: 10px; }
+        .back-link { display: block; margin-top: 25px; color: rgba(255,255,255,0.5); font-size: 12px; }
+        .back-link:hover { color: var(--neon-cyan); }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <h2>Access Portal</h2>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <p class="error-msg">⚠️ {{ messages[0] }}</p>
+            {% endif %}
+        {% endwith %}
+
+        <form action="/login" method="POST">
+            <input type="email" name="email" placeholder="USER ID (EMAIL)" required>
+            <input type="password" name="password" placeholder="PASSWORD" required>
+            
+            <select name="role">
+                <option value="student">Role: Student</option>
+                <option value="mentor">Role: Mentor</option>
+            </select>
+
+            <button type="submit">Connect</button>
+        </form>
+
+        <a href="/" class="back-link">ABORT LOGIN</a>
+    </div>
+
+</body>
+</html>
