@@ -139,9 +139,10 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: left;
             transition: 0.4s;
-            display: block; /* Ensures links behave like boxes */
+            display: block; /* Ensures elements behave like boxes */
         }
-        .card:hover { 
+        /* Target both cards and links with card class for hover effect */
+        .card:hover, a.card:hover { 
             transform: translateY(-10px); 
             border-color: var(--neon-cyan);
             box-shadow: 0 0 30px rgba(0, 243, 255, 0.1);
@@ -195,9 +196,7 @@
     <nav class="navbar">
         <div class="logo"><i class="fas fa-rocket"></i> EDUMENTOR</div>
         <div class="nav-links">
-            <a href="/login">Login</a>
             <a href="/register">Register</a>
-            <!-- Link to System View removed -->
         </div>
     </nav>
 
@@ -217,15 +216,13 @@
             <p>Log sessions with high-speed efficiency using our streamlined database inputs.</p>
         </div>
 
-        <!-- Animated Mentor Sync Card (Clickable) -->
-        <a href="/feedback" class="card">
+        <div class="card">
             <div class="icon-box"><i class="fas fa-network-wired"></i></div>
             <h3>Mentor Sync</h3>
             <p>Establish a direct link with experts to receive real-time qualitative feedback.</p>
-        </a>
+        </div>
 
-        <!-- Animated Data Visuals Card -->
-        <a href="/subjects" class="card">
+        <div class="card">
             <div class="mini-chart">
                 <div class="chart-bar"></div>
                 <div class="chart-bar"></div>
@@ -234,7 +231,7 @@
             </div>
             <h3>Data Visuals</h3>
             <p>View your progress through advanced percentage analytics and reporting.</p>
-        </a>
+        </div>
     </section>
 
     <footer>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Message Hub // EduMentor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --bg-dark: #0a0e17; --neon-cyan: #00f3ff; --neon-purple: #bc13fe; --card-bg: rgba(255, 255, 255, 0.05); }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg-dark); color: white; padding: 40px; }
+        .container { max-width: 900px; margin: 0 auto; display: flex; gap: 30px; }
+        
+        .inbox-panel { flex: 2; }
+        .compose-panel { flex: 1; min-width: 250px; }
+
+        h2 { color: var(--neon-cyan); text-transform: uppercase; border-bottom: 2px solid var(--neon-cyan); display: inline-block; padding-bottom: 5px; margin-bottom: 20px; }
+        h3 { color: var(--neon-purple); margin-top: 0; margin-bottom: 15px; font-weight: 600; font-size: 1.1em; }
+
+        .message-item { 
+            background: var(--card-bg); 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin-bottom: 10px;
+            border-left: 5px solid var(--neon-purple);
+            position: relative;
+        }
+
+        .sender-meta { font-size: 12px; color: #888; margin-bottom: 5px; }
+        .sender-name { font-weight: 600; color: #fff; text-transform: capitalize; }
+        .message-content { font-size: 14px; line-height: 1.5; color: #ccc; }
+        .timestamp { float: right; font-size: 10px; color: #555; }
+        .unread { border-left-color: var(--neon-cyan); background: rgba(0, 243, 255, 0.05); }
+
+        /* Compose Form */
+        .compose-panel .card {
+            background: var(--card-bg); 
+            padding: 20px; 
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        select, textarea, button { 
+            width: 100%; 
+            padding: 10px; 
+            margin-top: 8px; 
+            background: #000; 
+            border: 1px solid #333; 
+            color: white; 
+            border-radius: 4px; 
+            box-sizing: border-box; 
+        }
+
+        button { 
+            background: var(--neon-purple); 
+            border: none; 
+            font-weight: bold; 
+            cursor: pointer; 
+            text-transform: uppercase;
+            margin-top: 15px; 
+        }
+        button:hover { background: #d052ff; }
+
+        .back-link { display: block; color: #888; text-decoration: none; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="inbox-panel">
+            <a href="/dashboard" class="back-link">← Return to Dashboard</a>
+            <h2>📬 Incoming Messages</h2>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div style="color: green; margin-bottom: 15px;">{{ messages[0][1] }}</div>
+                {% endif %}
+            {% endwith %}
+
+            {% if inbox %}
+                {% for message in inbox %}
+                <div class="message-item {% if not message.is_read %}unread{% endif %}">
+                    <span class="timestamp">{{ message.timestamp }}</span>
+                    <div class="sender-meta">
+                        From: <span class="sender-name">{{ message.sender_name }} ({{ message.sender_role.upper() }})</span>
+                    </div>
+                    <div class="message-content">{{ message.content }}</div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="message-item">
+                    <div class="empty-state">No new transmissions received.</div>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="compose-panel">
+            <div class="card">
+                <h3><i class="fas fa-paper-plane"></i> Send New Message</h3>
+                <form action="/send_message" method="POST">
+                    <label style="font-size: 12px; color: #aaa;">Recipient</label>
+                    <select name="recipient_id" required>
+                        {% if contacts %}
+                            {% for contact in contacts %}
+                                <option value="{{ contact.id }}" data-role="{{ contact.role }}">
+                                    {{ contact.name }} ({% if contact.role == 'student' %}Sem: {{ contact.info }}{% else %}{{ contact.info }}{% endif %})
+                                </option>
+                            {% endfor %}
+                        {% else %}
+                            <option value="">No contacts available</option>
+                        {% endif %}
+                    </select>
+
+                    <input type="hidden" name="recipient_role" value="{{ contacts[0].role if contacts else '' }}">
+
+                    <label style="font-size: 12px; color: #aaa; margin-top: 10px;">Content</label>
+                    <textarea name="content" rows="4" placeholder="Type your message..." required></textarea>
+
+                    <button type="submit">Transmit</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

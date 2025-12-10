@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Access Denied // System View</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0e17; --neon-cyan: #00f3ff; --neon-purple: #bc13fe; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-dark);
+            height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; color: #fff;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .form-card {
+            background: rgba(255, 255, 255, 0.05); padding: 40px; border-radius: 15px; width: 350px;
+            backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.1);
+            text-align: center;
+        }
+        h2 { color: var(--neon-cyan); text-align: center; text-transform: uppercase; letter-spacing: 2px; }
+        input[type="password"] {
+            width: 80%; padding: 12px; margin: 20px 0 10px;
+            background: rgba(0,0,0,0.5); border: 1px solid #444; color: white; border-radius: 4px; box-sizing: border-box;
+            text-align: center; font-size: 24px; letter-spacing: 5px;
+        }
+        input:focus { outline: none; border-color: var(--neon-cyan); }
+        button {
+            width: 100%; padding: 12px; background: var(--neon-cyan); color: #000; border: none;
+            border-radius: 4px; font-weight: 700; margin-top: 15px; cursor: pointer; text-transform: uppercase;
+        }
+        button:hover { box-shadow: 0 0 20px var(--neon-cyan); }
+        .links a { color: #aaa; text-decoration: none; font-size: 12px; }
+        .error-msg { color: #ff4d4d; font-size: 14px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="form-card">
+        <h2>SYSTEM ACCESS</h2>
+        <p style="color:#aaa;">Developer PIN Required</p>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <p class="error-msg">⚠️ {{ messages[0] }}</p>
+            {% endif %}
+        {% endwith %}
+
+        <form action="/subjects" method="POST">
+            <input type="password" name="pin" placeholder="••••" required maxlength="4">
+            <button type="submit">Unlock Console</button>
+        </form>
+
+        <p class="links" style="margin-top: 20px;"><a href="/">RETURN TO HOMEPAGE</a></p>
+    </div>
+</body>
+</html>

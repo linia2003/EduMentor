@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Subject Analytics // EduMentor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <style>
+        :root { 
+            --bg-dark: #0a0e17; 
+            --neon-cyan: #00f3ff; 
+            --neon-purple: #bc13fe; 
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--bg-dark); 
+            color: #fff; 
+            padding: 40px; 
+        }
+        
+        .container { max-width: 900px; margin: 0 auto; }
+        
+        h2 { 
+            color: var(--neon-cyan); 
+            text-transform: uppercase; 
+            border-bottom: 2px solid var(--neon-cyan); 
+            display: inline-block; 
+            padding-bottom: 5px; 
+            margin-bottom: 30px;
+        }
+
+        .header-section { margin-bottom: 30px; }
+        .header-section h1 { color: #fff; margin-bottom: 5px; font-weight: 600; }
+        .header-section p { color: #aaa; font-size: 14px; }
+
+        .back-link {
+            color: #888; 
+            text-decoration: none;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .chart-card, .mentor-card {
+            background: var(--card-bg); 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+        }
+
+        .chart-card h3, .mentor-card h3 {
+            color: var(--neon-purple);
+            border-bottom: 1px dashed #333;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Mentor Summary Table */
+        .data-grid {
+            width: 100%; border-collapse: collapse; 
+            margin-top: 15px;
+        }
+        .data-grid th {
+            text-align: left; padding: 10px; color: var(--neon-cyan);
+            border-bottom: 1px solid var(--neon-cyan); text-transform: uppercase; font-size: 11px;
+        }
+        .data-grid td {
+            padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);
+            color: #ccc; font-size: 13px;
+        }
+        .data-grid tr:hover { background: rgba(0, 243, 255, 0.02); }
+        .total-hours { color: var(--neon-purple); font-weight: 600; }
+        
+        .empty-state { text-align: center; color: #555; font-style: italic; padding: 20px; }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/progress" class="back-link">← Return to Progress Report</a>
+        
+        <div class="header-section">
+            <h1>{{ subject.subject_name }} Analysis</h1>
+            <p>Subject ID: #{{ subject.subject_id }} | Credits: {{ subject.credits }}</p>
+        </div>
+
+        <div class="chart-card">
+            <h3><i class="fas fa-chart-area"></i> Study Hours (Last 30 Days)</h3>
+            {% if chart_data.labels %}
+                <div style="height: 300px;">
+                    <canvas id="studyHoursChart"></canvas>
+                </div>
+            {% else %}
+                <div class="empty-state">No study log data found for the last 30 days.</div>
+            {% endif %}
+        </div>
+
+        <div class="mentor-card">
+            <h3><i class="fas fa-network-wired"></i> Mentor Activity Breakdown</h3>
+            {% if mentor_summary %}
+            <table class="data-grid">
+                <thead>
+                    <tr>
+                        <th width="70%">Mentor Identity</th>
+                        <th width="30%">Total Logged Hours</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in mentor_summary %}
+                    <tr>
+                        <td>{{ item.mentor_name }}</td>
+                        <td class="total-hours">{{ item.total_hours | round(1) }} hrs</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+                <div class="empty-state">No study hours logged for this subject yet.</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Only run the chart creation if data is available
+        {% if chart_data.labels %}
+        const ctx = document.getElementById('studyHoursChart').getContext('2d');
+        const chartData = {
+            labels: JSON.parse('{{ chart_data.labels | tojson | safe }}'),
+            datasets: [{
+                label: 'Study Hours Logged',
+                data: JSON.parse('{{ chart_data.data | tojson | safe }}'),
+                backgroundColor: 'rgba(0, 243, 255, 0.2)', // neon cyan with transparency
+                borderColor: 'var(--neon-cyan)',
+                borderWidth: 2,
+                tension: 0.3,
+                fill: true,
+                pointBackgroundColor: 'var(--neon-purple)',
+                pointBorderColor: '#fff',
+                pointRadius: 4,
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data: chartData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Hours', color: '#aaa' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        ticks: { color: '#fff' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#fff' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    title: { display: false }
+                }
+            }
+        };
+
+        new Chart(ctx, config);
+        {% endif %}
+    </script>
+</body>
+</html>

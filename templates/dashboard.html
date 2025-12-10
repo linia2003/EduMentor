@@ -40,6 +40,40 @@
         }
         .btn-glow:hover { box-shadow: 0 0 25px rgba(188, 19, 254, 0.9); }
 
+        /* Progress Button (New) */
+        .btn-progress {
+            background: transparent;
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            padding: 12px 20px;
+            text-decoration: none; 
+            border-radius: 5px; 
+            font-weight: 600;
+            transition: 0.3s;
+            margin-right: 15px;
+        }
+        .btn-progress:hover {
+            background: rgba(0, 243, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+        }
+        
+        /* Message Button (NEW) */
+        .btn-message {
+            background: #4B0082; /* Deep violet */
+            color: #fff;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: 0.3s;
+            margin-right: 15px;
+        }
+        .btn-message:hover {
+            box-shadow: 0 0 15px rgba(188, 19, 254, 0.5);
+            background: var(--neon-purple);
+        }
+
+
         /* Cyberpunk Table */
         .data-grid {
             width: 100%; border-collapse: collapse; margin-top: 20px;
@@ -70,35 +104,70 @@
 
     <div class="container">
         <div class="header-flex">
-            <h2>Activity Logs</h2>
             {% if role == 'student' %}
-                <a href="/log_study" class="btn-glow"><i class="fas fa-plus"></i> NEW ENTRY</a>
+                <h2>Student Activity Logs</h2>
+                <div>
+                    <a href="/messages" class="btn-message"><i class="fas fa-comment-dots"></i> MESSAGE HUB</a>
+                    <a href="/progress" class="btn-progress"><i class="fas fa-chart-line"></i> VIEW PROGRESS</a>
+                    <a href="/log_study" class="btn-glow"><i class="fas fa-plus"></i> NEW ENTRY</a>
+                </div>
+            {% else %}
+                <h2>MENTOR STUDENT ACTIVITY REPORT</h2>
+                <div>
+                    <a href="/messages" class="btn-message"><i class="fas fa-comment-dots"></i> MESSAGE HUB</a>
+                </div>
             {% endif %}
         </div>
 
         {% if logs %}
         <table class="data-grid">
             <thead>
+                {% if role == 'student' %}
                 <tr>
                     <th>Date</th>
                     <th>Subject Protocol</th>
                     <th>Mentor / Guide</th>
                     <th>Duration (Hrs)</th>
                 </tr>
+                {% else %}
+                <tr>
+                    <th>Student Identity</th>
+                    <th>Semester</th>
+                    <th>Subject Protocol</th>
+                    <th>Duration (Hrs)</th>
+                    <th>Log Date</th>
+                </tr>
+                {% endif %}
             </thead>
             <tbody>
                 {% for log in logs %}
+                {% if role == 'student' %}
                 <tr>
                     <td>{{ log.study_date }}</td>
                     <td style="color: white; font-weight: 600;">{{ log.subject_name }}</td>
                     <td>{{ log.mentor_name }}</td>
                     <td><span style="color: var(--neon-cyan)">{{ log.duration_hours }} hrs</span></td>
                 </tr>
+                {% else %}
+                <tr>
+                    <td style="color: white; font-weight: 600;">{{ log.student_name }}</td>
+                    <td>{{ log.semester }}</td>
+                    <td>{{ log.subject_name }}</td>
+                    <td><span style="color: var(--neon-cyan)">{{ log.duration_hours }} hrs</span></td>
+                    <td>{{ log.study_date }}</td>
+                </tr>
+                {% endif %}
                 {% endfor %}
             </tbody>
         </table>
         {% else %}
-            <div class="empty-state">NO DATA FOUND // INITIALIZE STUDY SESSION</div>
+            <div class="empty-state">
+                {% if role == 'student' %}
+                    NO DATA FOUND // INITIALIZE STUDY SESSION
+                {% else %}
+                    NO STUDENT ACTIVITY LOGGED FOR YOUR MENTOR ID
+                {% endif %}
+            </div>
         {% endif %}
     </div>
 </body>

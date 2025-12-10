@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Progress Report // EduMentor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { 
+            --bg-dark: #0a0e17; 
+            --neon-cyan: #00f3ff; 
+            --neon-purple: #bc13fe; 
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--bg-dark); 
+            color: #fff; 
+            padding: 40px; 
+        }
+        
+        .container { max-width: 800px; margin: 0 auto; }
+        
+        h2 { 
+            color: var(--neon-cyan); 
+            text-transform: uppercase; 
+            border-bottom: 2px solid var(--neon-cyan); 
+            display: inline-block; 
+            padding-bottom: 5px; 
+            margin-bottom: 30px;
+        }
+
+        .report-item {
+            background: var(--card-bg); 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin-bottom: 15px;
+            border-left: 5px solid var(--neon-purple);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .subject-info {
+            flex-grow: 1;
+        }
+
+        .subject-info h3 {
+            margin: 0;
+            color: var(--neon-cyan);
+            font-weight: 600;
+        }
+
+        .subject-info a {
+            color: var(--neon-cyan);
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .subject-info a:hover {
+            text-decoration: underline;
+            color: #fff;
+        }
+
+        .progress-bar-container {
+            width: 60%;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            height: 15px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan));
+            transition: width 0.5s ease-in-out;
+            box-shadow: 0 0 5px rgba(0, 243, 255, 0.5);
+        }
+
+        .percentage {
+            font-size: 16px;
+            font-weight: 700;
+            width: 15%;
+            text-align: right;
+            color: var(--neon-cyan);
+        }
+
+        .last-updated {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .back-link {
+            color: #888; 
+            text-decoration: none;
+            display: block;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/dashboard" class="back-link">← Return to Dashboard</a>
+        
+        <h2>📈 Performance Report</h2>
+        
+        {% if report %}
+            {% for item in report %}
+            <div class="report-item">
+                <div class="subject-info">
+                    <h3>
+                        <a href="{{ url_for('subject_analytics', subject_id=item.subject_id) }}" title="View detailed analysis">
+                            {{ item.subject_name }}
+                        </a>
+                    </h3>
+                    <div class="last-updated">Last Updated: {{ item.last_updated }}</div>
+                    <p style="font-size:12px; color:#aaa; margin-top:5px;">Target: 10 hours per credit</p>
+                </div>
+
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: {{ item.progress_percentage }}%;"></div>
+                </div>
+
+                <div class="percentage">{{ item.progress_percentage | round(1) }}%</div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="report-item" style="justify-content: center; color: #555;">No tracked progress found. Log a study session to begin!</div>
+        {% endif %}
+    </div>
+</body>
+</html>
