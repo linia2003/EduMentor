@@ -29,6 +29,26 @@
         .message-content { font-size: 14px; line-height: 1.5; color: #ccc; }
         .timestamp { float: right; font-size: 10px; color: #555; }
         .unread { border-left-color: var(--neon-cyan); background: rgba(0, 243, 255, 0.05); }
+        
+        /* New Reaction Styles */
+        .reaction-bar { margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.1); }
+        .btn-react {
+            background: rgba(188, 19, 254, 0.2);
+            color: var(--neon-purple);
+            border: 1px solid var(--neon-purple);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-right: 5px;
+        }
+        .btn-react:hover {
+            background: var(--neon-purple);
+            color: white;
+            box-shadow: 0 0 10px rgba(188, 19, 254, 0.5);
+        }
 
         /* Compose Form */
         .compose-panel .card {
@@ -83,6 +103,34 @@
                         From: <span class="sender-name">{{ message.sender_name }} ({{ message.sender_role.upper() }})</span>
                     </div>
                     <div class="message-content">{{ message.content }}</div>
+
+                    {% if role == 'mentor' and message.sender_role == 'student' %}
+                        <div class="reaction-bar">
+                            <strong style="color: #aaa; font-size: 11px;">QUICK ACKNOWLEDGE:</strong>
+                            <form action="/react_message" method="POST" style="display: inline;">
+                                <input type="hidden" name="original_sender_id" value="{{ message.sender_id }}">
+                                <button type="submit" name="reaction" value="Understood" class="btn-react"><i class="fas fa-check"></i> Understood</button>
+                            </form>
+                            <form action="/react_message" method="POST" style="display: inline;">
+                                <input type="hidden" name="original_sender_id" value="{{ message.sender_id }}">
+                                <button type="submit" name="reaction" value="Good Progress" class="btn-react"><i class="fas fa-thumbs-up"></i> Good Progress</button>
+                            </form>
+                            <form action="/react_message" method="POST" style="display: inline;">
+                                <input type="hidden" name="original_sender_id" value="{{ message.sender_id }}">
+                                <button type="submit" name="reaction" value="Please Elaborate" class="btn-react"><i class="fas fa-reply"></i> Elaborate</button>
+                            </form>
+                            
+                            <form action="/react_message" method="POST" style="display: inline;">
+                                <input type="hidden" name="original_sender_id" value="{{ message.sender_id }}">
+                                <button type="submit" name="reaction" value="Neon Spark" class="btn-react" title="Send Neon Spark Emote">✨ Neon Spark</button>
+                            </form>
+                            <form action="/react_message" method="POST" style="display: inline;">
+                                <input type="hidden" name="original_sender_id" value="{{ message.sender_id }}">
+                                <button type="submit" name="reaction" value="Cyber Thumbs" class="btn-react" title="Send Cyber Thumbs Up Emote">🦾 Cyber Thumbs</button>
+                            </form>
+                            
+                        </div>
+                    {% endif %}
                 </div>
                 {% endfor %}
             {% else %}

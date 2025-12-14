@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Subject Selector // Mentor Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --bg-dark: #0a0e17; --neon-cyan: #00f3ff; --neon-purple: #bc13fe; --card-bg: rgba(255, 255, 255, 0.05); }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg-dark); color: white; padding: 40px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        h2 { color: var(--neon-cyan); text-transform: uppercase; border-bottom: 2px solid var(--neon-cyan); display: inline-block; padding-bottom: 5px; margin-bottom: 30px; }
+        .subject-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .subject-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: 0.3s;
+        }
+        .subject-card:hover {
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+            transform: translateY(-3px);
+        }
+        .subject-card a {
+            text-decoration: none;
+            color: #fff;
+            display: block;
+        }
+        .subject-card h3 { color: var(--neon-purple); margin-top: 0; }
+        .subject-card small { color: #aaa; display: block; }
+        .back-link { display: block; color: #888; text-decoration: none; margin-bottom: 20px; }
+        .empty-state { text-align: center; color: #555; padding: 30px; background: rgba(255, 255, 255, 0.03); border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/dashboard" class="back-link">← Return to Dashboard</a>
+
+        <h2><i class="fas fa-list-check"></i> Select Subject to Review</h2>
+        
+        {% if subjects %}
+        <div class="subject-grid">
+            {% for subject in subjects %}
+            <div class="subject-card">
+                <a href="{{ url_for('subject_performance_report', subject_id=subject.subject_id) }}">
+                    <h3>{{ subject.subject_name }}</h3>
+                    <small>Major: {{ subject.major_area }} | Credits: {{ subject.credits }}</small>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+            <div class="empty-state">
+                NO SUBJECTS FOUND. Ensure students have logged sessions with you, or check your expertise area assignment.
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

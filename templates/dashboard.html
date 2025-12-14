@@ -2,10 +2,19 @@
 <html lang="en">
 <head>
     <title>Mission Control // EduMentor</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --bg-dark: #0a0e17; --neon-cyan: #00f3ff; --neon-purple: #bc13fe; }
+        /* --- THEME VARIABLES (Unchanged) --- */
+        :root { 
+            --bg-dark: #0a0e17; 
+            --neon-cyan: #00f3ff; 
+            --neon-purple: #bc13fe; 
+            --color-red: #ff4d4d;
+            --color-green: #10b981;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --grid-line: rgba(255, 255, 255, 0.1);
+        }
         
         body { 
             font-family: 'Poppins', sans-serif; 
@@ -18,79 +27,167 @@
         
         /* Navbar */
         .top-bar {
-            background: rgba(10, 14, 23, 0.9);
+            background: rgba(10, 14, 23, 0.95);
             padding: 20px 50px;
-            border-bottom: 1px solid var(--neon-cyan);
+            border-bottom: 2px solid var(--neon-cyan);
             display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         .logo { font-weight: 700; color: var(--neon-cyan); letter-spacing: 2px; }
         
-        .container { padding: 50px; max-width: 1000px; margin: 0 auto; }
+        .container { padding: 50px; max-width: 1200px; margin: 0 auto; } 
         
-        /* Header Section */
-        .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        h2 { font-weight: 400; color: #aaa; text-transform: uppercase; letter-spacing: 1px; }
-        
-        /* New Session Button */
-        .btn-glow {
-            background: var(--neon-purple); color: #fff; padding: 12px 25px;
-            text-decoration: none; border-radius: 5px; font-weight: 600;
-            box-shadow: 0 0 15px rgba(188, 19, 254, 0.5); transition: 0.3s;
+        /* Headers */
+        h2 { 
+            font-weight: 700; 
+            color: var(--neon-cyan); 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            margin-bottom: 25px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--neon-purple); /* Changed from dashed to solid underline */
+            display: inline-block;
         }
-        .btn-glow:hover { box-shadow: 0 0 25px rgba(188, 19, 254, 0.9); }
+        
+        /* --- NEW DASHBOARD GRID LAYOUT --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 3fr; /* Sidebar for actions, main area for data */
+            gap: 40px;
+            margin-top: 20px;
+        }
+        
+        /* Action Sidebar */
+        .action-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding-top: 10px;
+        }
 
-        /* Progress Button (New) */
-        .btn-progress {
-            background: transparent;
-            border: 1px solid var(--neon-cyan);
-            color: var(--neon-cyan);
-            padding: 12px 20px;
+        /* Action Buttons (The core UI element) */
+        .btn-action {
+            display: block;
+            padding: 15px;
             text-decoration: none; 
-            border-radius: 5px; 
+            border-radius: 8px; 
             font-weight: 600;
             transition: 0.3s;
-            margin-right: 15px;
-        }
-        .btn-progress:hover {
-            background: rgba(0, 243, 255, 0.1);
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+            text-transform: uppercase;
+            font-size: 13px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            border: 1px solid transparent;
         }
         
-        /* Message Button (NEW) */
-        .btn-message {
-            background: #4B0082; /* Deep violet */
-            color: #fff;
-            padding: 12px 20px;
+        /* Button Style Mapping */
+        .btn-new-entry { background: var(--neon-purple); border-color: var(--neon-purple); color: #fff; }
+        .btn-new-entry:hover { background: #d052ff; box-shadow: 0 0 20px rgba(188, 19, 254, 0.7); transform: scale(1.02); }
+
+        .btn-progress { background: rgba(0, 243, 255, 0.1); border-color: var(--neon-cyan); color: var(--neon-cyan); }
+        .btn-progress:hover { background: rgba(0, 243, 255, 0.2); transform: scale(1.02); }
+
+        .btn-feedback { background: rgba(16, 185, 129, 0.1); border-color: var(--color-green); color: var(--color-green); }
+        .btn-feedback:hover { background: rgba(16, 185, 129, 0.2); transform: scale(1.02); }
+
+        .btn-message { background: rgba(75, 0, 130, 0.5); border-color: #4B0082; color: #fff; }
+        .btn-message:hover { background: rgba(139, 92, 246, 0.3); transform: scale(1.02); }
+        
+        .btn-goal { background: rgba(245, 158, 11, 0.15); border-color: #f59e0b; color: #f59e0b; }
+        .btn-goal:hover { background: rgba(245, 158, 11, 0.3); transform: scale(1.02); }
+        
+        .btn-performance { background: rgba(138, 43, 226, 0.1); border-color: #8A2BE2; color: #8A2BE2; }
+        .btn-performance:hover { background: rgba(138, 43, 226, 0.2); transform: scale(1.02); }
+
+        .btn-action i { margin-right: 10px; font-size: 1.1em; }
+        .btn-action span { float: right; font-size: 1.2em; }
+
+
+        /* Goal/Metric Area */
+        .main-data-area {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Current Goal Banner (Clickable Card Style) */
+        a .current-goal-banner {
             text-decoration: none;
-            border-radius: 5px;
-            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(188, 19, 254, 0.1); 
+            border-left: 5px solid var(--neon-purple); 
+            padding: 20px; 
+            margin-bottom: 30px; 
+            border-radius: 8px; 
+            cursor: pointer;
             transition: 0.3s;
-            margin-right: 15px;
         }
-        .btn-message:hover {
-            box-shadow: 0 0 15px rgba(188, 19, 254, 0.5);
-            background: var(--neon-purple);
+        a .current-goal-banner:hover {
+             background: rgba(188, 19, 254, 0.25);
+             box-shadow: 0 0 15px rgba(188, 19, 254, 0.4);
+        }
+        .goal-alert-text { font-weight: 600; }
+        .view-history-text {
+            font-size: 14px; 
+            color: var(--neon-cyan); 
+            font-weight: 600; 
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .empty-goal-banner {
+            background: var(--card-bg); 
+            border-left: 5px solid #888; 
+            padding: 20px; 
+            margin-bottom: 30px; 
+            border-radius: 8px; 
+            color: #aaa;
         }
 
+        /* Data Grid (Table) Redesign */
+        .data-grid-container {
+            border-radius: 8px;
+            overflow: hidden; 
+            border: 1px solid var(--grid-line);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.1);
+            background: rgba(0, 0, 0, 0.3);
+        }
 
-        /* Cyberpunk Table */
         .data-grid {
-            width: 100%; border-collapse: collapse; margin-top: 20px;
-            background: rgba(255,255,255,0.02);
-            backdrop-filter: blur(5px);
+            width: 100%; 
+            border-collapse: collapse; 
         }
         .data-grid th {
-            text-align: left; padding: 15px; color: var(--neon-cyan);
-            border-bottom: 1px solid var(--neon-cyan); text-transform: uppercase; font-size: 12px;
+            text-align: left; 
+            padding: 15px; 
+            color: var(--neon-cyan);
+            background: rgba(0, 243, 255, 0.08); /* Highlight header background */
+            border-bottom: 1px solid var(--neon-cyan); 
+            text-transform: uppercase; 
+            font-size: 12px;
+            font-weight: 600;
         }
         .data-grid td {
-            padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.1);
-            color: #ccc; font-size: 14px;
+            padding: 15px; 
+            border-bottom: 1px solid var(--grid-line);
+            color: #ccc; 
+            font-size: 14px;
         }
-        .data-grid tr:hover { background: rgba(0, 243, 255, 0.05); }
+        .data-grid tr:hover { 
+            background: rgba(0, 243, 255, 0.05); 
+            transition: 0.2s;
+        }
+        .data-grid tr:last-child td { border-bottom: none; }
+        .highlight-duration { color: var(--neon-cyan); font-weight: 600; }
+        .highlight-name { color: white; font-weight: 600; }
 
-        .empty-state { text-align: center; color: #555; margin-top: 50px; font-style: italic; }
+
+        .empty-state { text-align: center; color: #555; padding: 40px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -98,77 +195,136 @@
         <div class="logo">EDUMENTOR_HUB</div>
         <div>
             <span style="color:#888; margin-right: 15px;">OPERATOR: {{ name.upper() }}</span>
-            <a href="/logout" style="color: #ff4d4d; text-decoration: none;">[DISCONNECT]</a>
+            <a href="/logout" style="color: var(--color-red); text-decoration: none;">[DISCONNECT]</a>
         </div>
     </div>
 
     <div class="container">
-        <div class="header-flex">
-            {% if role == 'student' %}
-                <h2>Student Activity Logs</h2>
-                <div>
-                    <a href="/messages" class="btn-message"><i class="fas fa-comment-dots"></i> MESSAGE HUB</a>
-                    <a href="/progress" class="btn-progress"><i class="fas fa-chart-line"></i> VIEW PROGRESS</a>
-                    <a href="/log_study" class="btn-glow"><i class="fas fa-plus"></i> NEW ENTRY</a>
-                </div>
-            {% else %}
-                <h2>MENTOR STUDENT ACTIVITY REPORT</h2>
-                <div>
-                    <a href="/messages" class="btn-message"><i class="fas fa-comment-dots"></i> MESSAGE HUB</a>
-                </div>
-            {% endif %}
-        </div>
+        <h2>{% if role == 'student' %}<i class="fas fa-user-graduate"></i> Student Terminal{% else %}<i class="fas fa-chalkboard-teacher"></i> Mentor Control Panel{% endif %}</h2>
 
-        {% if logs %}
-        <table class="data-grid">
-            <thead>
+        <div class="dashboard-grid">
+            
+            {# --- LEFT SIDEBAR: QUICK ACTIONS --- #}
+            <div class="action-sidebar">
                 {% if role == 'student' %}
-                <tr>
-                    <th>Date</th>
-                    <th>Subject Protocol</th>
-                    <th>Mentor / Guide</th>
-                    <th>Duration (Hrs)</th>
-                </tr>
+                    <a href="{{ url_for('log_study') }}" class="btn-action btn-new-entry">
+                        <i class="fas fa-plus-circle"></i> NEW STUDY ENTRY <span>→</span>
+                    </a>
+                    <a href="{{ url_for('progress_report') }}" class="btn-action btn-progress">
+                        <i class="fas fa-chart-line"></i> VIEW PROGRESS REPORT <span>→</span>
+                    </a>
+                    <a href="{{ url_for('feedback') }}" class="btn-action btn-feedback">
+                        <i class="fas fa-inbox"></i> VIEW MENTOR FEEDBACK <span>→</span>
+                    </a>
+                    <a href="{{ url_for('message_inbox') }}" class="btn-action btn-message">
+                        <i class="fas fa-comment-dots"></i> MESSAGE HUB <span>→</span>
+                    </a>
                 {% else %}
-                <tr>
-                    <th>Student Identity</th>
-                    <th>Semester</th>
-                    <th>Subject Protocol</th>
-                    <th>Duration (Hrs)</th>
-                    <th>Log Date</th>
-                </tr>
-                {% endif %}
-            </thead>
-            <tbody>
-                {% for log in logs %}
-                {% if role == 'student' %}
-                <tr>
-                    <td>{{ log.study_date }}</td>
-                    <td style="color: white; font-weight: 600;">{{ log.subject_name }}</td>
-                    <td>{{ log.mentor_name }}</td>
-                    <td><span style="color: var(--neon-cyan)">{{ log.duration_hours }} hrs</span></td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td style="color: white; font-weight: 600;">{{ log.student_name }}</td>
-                    <td>{{ log.semester }}</td>
-                    <td>{{ log.subject_name }}</td>
-                    <td><span style="color: var(--neon-cyan)">{{ log.duration_hours }} hrs</span></td>
-                    <td>{{ log.study_date }}</td>
-                </tr>
-                {% endif %}
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-            <div class="empty-state">
-                {% if role == 'student' %}
-                    NO DATA FOUND // INITIALIZE STUDY SESSION
-                {% else %}
-                    NO STUDENT ACTIVITY LOGGED FOR YOUR MENTOR ID
+                    <a href="{{ url_for('goals_management') }}" class="btn-action btn-goal">
+                        <i class="fas fa-bullseye"></i> SET/MANAGE GOALS <span>→</span>
+                    </a>
+                    <a href="{{ url_for('subject_selector') }}" class="btn-action btn-performance">
+                        <i class="fas fa-chart-bar"></i> VIEW PERFORMANCE <span>→</span>
+                    </a>
+                    <a href="{{ url_for('feedback') }}" class="btn-action btn-feedback">
+                        <i class="fas fa-comment-dots"></i> MANAGE FEEDBACK <span>→</span>
+                    </a>
+                    <a href="{{ url_for('message_inbox') }}" class="btn-action btn-message">
+                        <i class="fas fa-paper-plane"></i> MESSAGE HUB <span>→</span>
+                    </a>
                 {% endif %}
             </div>
-        {% endif %}
+
+            {# --- RIGHT MAIN AREA: GOALS AND LOGS --- #}
+            <div class="main-data-area">
+                
+                {# Goal Banner / Metric Display (Student Only) #}
+                {% if role == 'student' %}
+                    <h3 style="color: var(--neon-purple); margin-bottom: 15px;"><i class="fas fa-compass"></i> MISSION STATUS</h3>
+
+                    {% if current_goal %}
+                        <a href="{{ url_for('student_goals') }}" style="text-decoration: none;">
+                            <div class="current-goal-banner">
+                                <div>
+                                    <strong style="color: var(--neon-cyan); font-size: 16px; font-weight: 600;"><i class="fas fa-flag"></i> ACTIVE TARGET: {{ current_goal.subject_name }}</strong>
+                                    <p style="color: #ccc; margin: 5px 0 10px 0;">
+                                        Target Hours: {{ current_goal.target_hours }} hrs | Due: {{ current_goal.due_date }}
+                                    </p>
+                                    {% if current_goal.is_overdue %}
+                                        <span class="goal-alert-text" style="color: var(--color-red);"><i class="fas fa-exclamation-triangle"></i> TARGET OVERDUE. Review History.</span>
+                                    {% else %}
+                                        <span class="goal-alert-text" style="color: var(--color-green);"><i class="fas fa-check-circle"></i> Goal is Active. Keep logging progress!</span>
+                                    {% endif %}
+                                </div>
+                                <div class="view-history-text">
+                                    VIEW GOAL HISTORY <i class="fas fa-arrow-right"></i>
+                                </div>
+                            </div>
+                        </a>
+                    {% else %}
+                        <div class="empty-goal-banner">
+                            <i class="fas fa-bullseye"></i> No active goals detected. Contact your mentor to set a new target.
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                {# Data Grid (Table) #}
+                <h3 style="color: var(--neon-purple); margin-bottom: 15px;"><i class="fas fa-scroll"></i> RECENT LOGS</h3>
+                
+                <div class="data-grid-container">
+                    {% if logs %}
+                    <table class="data-grid">
+                        <thead>
+                            {% if role == 'student' %}
+                            <tr>
+                                <th width="15%">Date</th>
+                                <th width="40%">Subject Protocol</th>
+                                <th width="30%">Mentor / Guide</th>
+                                <th width="15%">Duration (Hrs)</th>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <th width="20%">Student Identity</th>
+                                <th width="10%">Semester</th>
+                                <th width="30%">Subject Protocol</th>
+                                <th width="15%">Duration (Hrs)</th>
+                                <th width="25%">Log Date</th>
+                            </tr>
+                            {% endif %}
+                        </thead>
+                        <tbody>
+                            {% for log in logs %}
+                            {% if role == 'student' %}
+                            <tr>
+                                <td>{{ log.study_date }}</td>
+                                <td class="highlight-name">{{ log.subject_name }}</td>
+                                <td>{{ log.mentor_name }}</td>
+                                <td><span class="highlight-duration">{{ log.duration_hours }} hrs</span></td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td class="highlight-name">{{ log.student_name }}</td>
+                                <td>{{ log.semester }}</td>
+                                <td>{{ log.subject_name }}</td>
+                                <td><span class="highlight-duration">{{ log.duration_hours }} hrs</span></td>
+                                <td>{{ log.study_date }}</td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                        <div class="empty-state">
+                            {% if role == 'student' %}
+                                NO DATA FOUND // INITIALIZE STUDY SESSION
+                            {% else %}
+                                NO STUDENT ACTIVITY LOGGED FOR YOUR MENTOR ID
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

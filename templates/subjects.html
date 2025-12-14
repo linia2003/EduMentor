@@ -232,7 +232,6 @@
     <div class="container">
         <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Return to Dashboard</a>
 
-        <!-- SECTION 1: SYSTEM ANALYTICS (FROM SQL VIEW) -->
         <div class="card">
             <h2><i class="fas fa-chart-pie" style="color: var(--accent-cyan);"></i> Analytics Report</h2>
             <p class="section-desc">Real-time aggregation from View: <code>StudentStudySummary</code></p>
@@ -264,12 +263,10 @@
         </div>
 
 
-        <!-- SECTION 2: MENTORS LIST & ADD FORM -->
         <div class="card">
             <h2><i class="fas fa-chalkboard-teacher" style="color: var(--accent-purple);"></i> Mentor Database</h2>
             <p class="section-desc">Managing active personnel via Table: <code>Mentors</code></p>
 
-            <!-- ADD MENTOR FORM -->
             <div class="card action-card">
                 <div class="action-header"><i class="fas fa-bolt"></i> Quick Action: Onboard New Mentor</div>
                 <form class="add-form" action="/add_mentor_action" method="POST">
@@ -293,7 +290,6 @@
                 </form>
             </div>
 
-            <!-- MENTOR TABLE -->
             <div class="table-responsive">
                 <table>
                     <thead>
@@ -325,12 +321,10 @@
         </div>
 
 
-        <!-- SECTION 3: RAW SUBJECT DATA & ADD FORM -->
         <div class="card">
             <h2><i class="fas fa-book" style="color: var(--accent-green);"></i> Subject Registry</h2>
             <p class="section-desc">Curriculum data fetched from Table: <code>Subjects</code></p>
 
-            <!-- ADD SUBJECT FORM -->
             <div class="card action-card green-accent">
                 <div class="action-header"><i class="fas fa-plus-square"></i> Quick Action: Add New Subject</div>
                 <form class="add-form" action="/add_subject_action" method="POST">
@@ -341,6 +335,10 @@
                     <div class="input-group">
                         <label>Credit Hours</label>
                         <input type="number" name="credits" placeholder="e.g. 4" required min="1" max="10">
+                    </div>
+                    <div class="input-group">
+                        <label>Major Area Protocol</label>
+                        <input type="text" name="major_area" placeholder="e.g. AI & Logic or BBA" required>
                     </div>
                     <button type="submit"><i class="fas fa-plus-circle"></i> Add Subject</button>
                 </form>

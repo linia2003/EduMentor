@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Feedback History // {{ student_name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { 
+            --bg-dark: #0a0e17; 
+            --neon-cyan: #00f3ff; 
+            --neon-purple: #bc13fe; 
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --color-red: #ef4444; 
+            --color-green: #10b981;
+        }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg-dark); color: white; padding: 40px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        
+        .header-section { margin-bottom: 30px; }
+        .header-section h1 { 
+            color: var(--neon-cyan); 
+            font-weight: 600; 
+            border-bottom: 2px solid var(--neon-cyan);
+            padding-bottom: 5px;
+            margin-bottom: 5px;
+        }
+        .header-section p { color: #aaa; font-size: 16px; }
+
+        .back-link { color: #888; text-decoration: none; display: block; margin-bottom: 20px; }
+        
+        .feedback-item {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 5px solid var(--neon-purple);
+        }
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .feedback-rating {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--color-green);
+        }
+        .rating-low { color: var(--color-red); }
+        .rating-mid { color: #f59e0b; }
+
+        .feedback-content p { margin: 0; color: #ccc; }
+        .feedback-date { font-size: 12px; color: #888; }
+        
+        .empty-state { text-align: center; color: #555; padding: 30px; background: rgba(255, 255, 255, 0.03); border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{{ url_for('goals_management') }}" class="back-link">← Back to Goal Terminal</a>
+        
+        <div class="header-section">
+            <h1>Feedback History for {{ student_name }}</h1>
+            <p><i class="fas fa-user-tag"></i> Student ID: #{{ student_id }}</p>
+        </div>
+
+        {% if history %}
+            {% for item in history %}
+            {# CORRECTED: Use | int filter to convert item.rating from string to integer before comparison #}
+            {% set rating_class = 'rating-low' if item.rating | int < 3 else ('rating-mid' if item.rating | int == 3 else '') %}
+            
+            <div class="feedback-item">
+                <div class="feedback-header">
+                    <span class="feedback-rating {{ rating_class }}">
+                        <i class="fas fa-star"></i> {{ item.rating }}/5
+                    </span>
+                    <span class="feedback-date">
+                        <i class="far fa-calendar-alt"></i> {{ item.feedback_date }}
+                    </span>
+                </div>
+                <div class="feedback-content">
+                    <p>{{ item.comments }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-exclamation-circle"></i> NO HISTORICAL FEEDBACK FOUND.
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

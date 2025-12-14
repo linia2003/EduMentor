@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Goal Management // EduMentor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { 
+            --bg-dark: #0a0e17; 
+            --neon-cyan: #00f3ff; 
+            --neon-purple: #bc13fe; 
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --color-red: #ef4444; 
+            --color-green: #10b981;
+        }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg-dark); color: white; padding: 40px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .card { background: var(--card-bg); padding: 30px; border-radius: 12px; margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.1); }
+        
+        h2 { color: var(--neon-cyan); text-transform: uppercase; border-bottom: 2px solid var(--neon-cyan); display: inline-block; padding-bottom: 5px; margin-bottom: 20px; }
+        h3 { color: var(--neon-purple); margin-top: 0; margin-bottom: 15px; font-weight: 600; font-size: 1.1em; }
+
+        select, input[type="number"], input[type="date"], button { 
+            width: 100%; 
+            padding: 12px; 
+            margin-top: 10px; 
+            background: #000; 
+            border: 1px solid #333; 
+            color: white; 
+            border-radius: 5px; 
+            box-sizing: border-box;
+        }
+        /* Style for the main SET/UPDATE GOAL button */
+        button { background: var(--neon-purple); border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+        button:hover { background: #d052ff; }
+
+        .form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .form-grid .full-width { grid-column: span 3; }
+
+        .goal-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-left: 5px solid var(--neon-purple);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .goal-info { flex-grow: 1; }
+        
+        /* NEW: Progress Display Area */
+        .progress-display {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-right: 15px;
+        }
+        .progress-bar-container {
+            width: 150px;
+            height: 10px;
+            background: #333;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        .progress-bar {
+            height: 100%;
+            transition: width 0.5s;
+        }
+        .progress-percent {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .text-green { color: var(--color-green); }
+        .text-red { color: var(--color-red); }
+
+        /* Status & Toggle Buttons */
+        .goal-status { font-weight: 600; padding: 5px 10px; border-radius: 4px; font-size: 12px; white-space: nowrap; }
+        
+        .status-met { background: var(--color-green); color: white; }
+        .status-missed { background: var(--color-red); color: white; }
+        .status-active { background: #f59e0b; color: #333; }
+        
+        .back-link { display: block; color: #888; text-decoration: none; margin-bottom: 20px; }
+        
+        .goal-item form button {
+            background: #663399; 
+            transition: 0.2s;
+            width: auto; padding: 5px 10px; font-size: 11px; margin-top: 0;
+            border: none;
+            box-shadow: none;
+        }
+        .goal-item form button:hover { background: #4B0082; }
+
+        /* Bouncing Animation */
+        @keyframes bounce-in {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        .bounce-animation {
+            animation: bounce-in 0.3s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/dashboard" class="back-link">← Return to Dashboard</a>
+        
+        <h2>🎯 Goal Setting Terminal</h2>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div id="flash-message" style="color: {{ 'green' if messages[0][0] == 'success' else 'red' }}; margin-bottom: 15px;">{{ messages[0][1] }}</div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="card">
+            <h3><i class="fas fa-bullseye"></i> Define New Study Goal</h3>
+            <form action="/goals" method="POST">
+                <div class="form-grid">
+                    <div>
+                        <label>Student Target</label>
+                        <select name="student_id" required>
+                            {% for student in students %}
+                                <option value="{{ student.student_id }}">{{ student.name }} (Sem: {{ student.semester }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label>Subject Protocol</label>
+                        <select name="subject_id" required>
+                            {% for subject in subjects %}
+                                <option value="{{ subject.subject_id }}">{{ subject.subject_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label>Target Hours</label>
+                        <input type="number" name="target_hours" step="0.5" min="1" placeholder="e.g. 10.0" required>
+                    </div>
+                    
+                    <div class="full-width">
+                        <label>Target Completion Date</label>
+                        <input type="date" name="due_date" required>
+                    </div>
+                    
+                    <div class="full-width">
+                        <button type="submit"><i class="fas fa-plus"></i> SET/UPDATE GOAL</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <h3><i class="fas fa-list-check"></i> Active & Past Goals</h3>
+        {% if goals %}
+            {% for goal in goals %}
+            {# Calculate progress variables for easy access in the loop #}
+            {% set progress = goal.progress_percent | round(0) %}
+            {# Determine bar color: Green if 100%+, Neon Cyan otherwise #}
+            {% set bar_color = 'var(--color-green)' if progress >= 100 else 'var(--neon-cyan)' %}
+            {# Determine text color: Green if 100%+, Red otherwise #}
+            {% set text_color_class = 'text-green' if progress >= 100 else 'text-red' %}
+            
+            <div class="goal-item" id="goal-{{ goal.goal_id }}">
+                <div class="goal-info">
+                    <a href="{{ url_for('mentor_feedback_history', student_id=goal.student_id) }}" style="color: var(--neon-cyan); text-decoration: none;">
+                        <strong>{{ goal.student_name }}</strong>
+                    </a> 
+                    for 
+                    <span style="color: var(--neon-cyan);">{{ goal.subject_name }}</span>
+                    <br>
+                    <small style="color: #aaa;">Target: {{ goal.target_hours | round(1) }} hrs</small>
+                </div>
+                
+                <div class="progress-display">
+                    <span class="{{ text_color_class }} progress-percent">
+                        {{ progress | round(0) }}% Complete
+                    </span>
+                    <small style="color: #ccc;">{{ goal.current_hours | round(1) }} / {{ goal.target_hours | round(1) }} hrs</small>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" 
+                             style="width: {{ progress }}%; background: {{ bar_color }};">
+                        </div>
+                    </div>
+                </div>
+                
+                <form action="{{ url_for('toggle_goal_met', goal_id=goal.goal_id) }}" method="POST" style="margin-right: 15px;">
+                    <button type="submit" id="toggle-btn-{{ goal.goal_id }}"
+                            class="toggle-btn"
+                            style="width: auto; padding: 5px 10px; font-size: 11px; margin-top: 0;">
+                        {% if goal.is_met %}
+                            <i class="fas fa-undo"></i> MARK ACTIVE
+                        {% else %}
+                            <i class="fas fa-check"></i> MARK MET
+                        {% endif %}
+                    </button>
+                </form>
+
+                <div class="goal-status 
+                    {% if goal.is_met %}status-met
+                    {% elif goal.due_date|string < today_date %}status-missed
+                    {% else %}status-active{% endif %}">
+                    {% if goal.is_met %}MET
+                    {% elif goal.due_date|string < today_date %}MISSED
+                    {% else %}ACTIVE{% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="card" style="text-align: center; color: #555;">No goals have been set by you yet.</div>
+        {% endif %}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Add Bounce Animation to Toggled Button
+            const flashMessage = document.getElementById('flash-message');
+            if (flashMessage && flashMessage.textContent.includes('Goal status updated successfully')) {
+                // Since we don't have the specific ID, we apply the bounce to all buttons briefly for demonstration/UX feedback:
+                document.querySelectorAll('.toggle-btn').forEach(btn => {
+                    btn.classList.add('bounce-animation');
+                    setTimeout(() => {
+                        btn.classList.remove('bounce-animation');
+                    }, 500);
+                });
+            }
+            
+            // 2. Client-side Status Update for MISSED (Only for visualization, server sets final status)
+            const today = new Date().toISOString().split('T')[0];
+            document.querySelectorAll('.goal-item').forEach(item => {
+                const statusDiv = item.querySelector('.goal-status');
+                const isMet = statusDiv.classList.contains('status-met');
+                
+                // Only run logic if the status is NOT already MET
+                if (!isMet) {
+                     // Note: Due date is already available in the Python context (today_date) for the initial render.
+                     // This script handles the cosmetic update if the due date is past today client-side.
+                    const dueDateText = item.querySelector('small').textContent.match(/Due: (\d{4}-\d{2}-\d{2})/);
+                    if (dueDateText) {
+                        const dueDate = dueDateText[1];
+                        
+                        // Client-side check for MISSED status based on DUE DATE
+                        if (dueDate < today && !statusDiv.classList.contains('status-missed')) {
+                            statusDiv.textContent = 'MISSED (DATE)'; 
+                            statusDiv.className = 'goal-status status-missed';
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

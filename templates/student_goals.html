@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Goal History // Student Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { 
+            --bg-dark: #0a0e17; 
+            --neon-cyan: #00f3ff; 
+            --neon-purple: #bc13fe; 
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --color-red: #ef4444; 
+            --color-green: #10b981;
+            --color-orange: #f59e0b;
+        }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg-dark); color: white; padding: 40px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        
+        h2 { color: var(--neon-cyan); text-transform: uppercase; border-bottom: 2px solid var(--neon-cyan); display: inline-block; padding-bottom: 5px; margin-bottom: 20px; }
+        
+        .goal-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-left: 5px solid var(--neon-purple);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .goal-info { flex-grow: 1; }
+        .goal-info strong { color: white; font-size: 1.1em; }
+        .goal-info span { color: var(--neon-cyan); }
+        .goal-meta { font-size: 12px; color: #888; margin-top: 5px; }
+
+        .progress-display {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-left: 30px;
+        }
+        .progress-bar-container {
+            width: 120px;
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        .progress-bar {
+            height: 100%;
+            transition: width 0.5s;
+        }
+        .progress-percent {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .text-green { color: var(--color-green); }
+        .text-red { color: var(--color-red); }
+        .text-orange { color: var(--color-orange); }
+
+        .status-tag { 
+            font-weight: 600; 
+            padding: 5px 10px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            white-space: nowrap; 
+            margin-left: 15px;
+            text-align: center;
+            width: 70px;
+        }
+        
+        .status-met { background: var(--color-green); color: white; }
+        .status-missed { background: var(--color-red); color: white; }
+        .status-active { background: var(--color-orange); color: #333; }
+        
+        .back-link { display: block; color: #888; text-decoration: none; margin-bottom: 20px; }
+        .empty-state { text-align: center; color: #555; padding: 20px; background: var(--card-bg); border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/dashboard" class="back-link">← Return to Dashboard</a>
+        
+        <h2><i class="fas fa-list-check"></i> My Subject Goals History</h2>
+
+        {% if goals %}
+            {% for goal in goals %}
+            
+            {% set progress = goal.progress_percent | round(0) %}
+            {% set bar_color = 'var(--color-green)' if progress >= 100 else 'var(--neon-cyan)' %}
+            {% set text_color_class = 'text-green' if progress >= 100 else ('text-red' if goal.due_date|string < today_date and not goal.is_met else 'text-orange') %}
+            
+            <div class="goal-item">
+                <div class="goal-info">
+                    <strong>{{ goal.subject_name }}</strong>
+                    <div class="goal-meta">
+                        Mentor: <span>{{ goal.mentor_name }}</span> | Due: {{ goal.due_date }}
+                    </div>
+                </div>
+                
+                <div class="progress-display">
+                    <span class="{{ text_color_class }} progress-percent">
+                        {{ progress | round(0) }}% Complete
+                    </span>
+                    <small style="color: #ccc;">{{ goal.current_hours | round(1) }} / {{ goal.target_hours | round(1) }} hrs</small>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" 
+                             style="width: {{ progress }}%; background: {{ bar_color }};">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="status-tag 
+                    {% if goal.is_met %}status-met
+                    {% elif goal.due_date|string < today_date and not goal.is_met %}status-missed
+                    {% else %}status-active{% endif %}">
+                    {% if goal.is_met %}MET
+                    {% elif goal.due_date|string < today_date %}MISSED
+                    {% else %}ACTIVE{% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-bullseye"></i> No goals have been set for you by your mentor yet.
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

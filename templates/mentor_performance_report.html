@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Performance Report // {{ subject.subject_name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { 
+            --bg-dark: #0a0e17; 
+            --neon-cyan: #00f3ff; 
+            --neon-purple: #bc13fe; 
+            --color-red: #ef4444; 
+            --color-green: #10b981;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg-dark); color: white; padding: 40px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        
+        h1 { color: var(--neon-cyan); border-bottom: 2px solid var(--neon-cyan); padding-bottom: 5px; margin-bottom: 5px; }
+        p { color: #aaa; margin-bottom: 30px; }
+        .back-link { display: block; color: #888; text-decoration: none; margin-bottom: 20px; }
+
+        .data-grid { width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--card-bg); }
+        .data-grid th { text-align: left; padding: 15px; color: var(--neon-purple); border-bottom: 1px solid var(--neon-purple); text-transform: uppercase; font-size: 12px; }
+        .data-grid td { padding: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); color: #ccc; font-size: 14px; }
+        .data-grid tr:hover { background: rgba(188, 19, 254, 0.05); }
+
+        .progress-indicator { font-weight: 600; }
+        .progress-high { color: var(--color-green); }
+        .progress-low { color: var(--color-red); }
+        .progress-medium { color: #f59e0b; }
+        
+        .empty-state { text-align: center; color: #555; padding: 30px; background: rgba(255, 255, 255, 0.03); border-radius: 8px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{{ url_for('subject_selector') }}" class="back-link">← Back to Subject Selector</a>
+        
+        <h1><i class="fas fa-chart-bar"></i> Performance Report: {{ subject.subject_name }}</h1>
+        <p>Total Credits: {{ subject.credits }} | Calculated Target Hours (Credits x 10): {{ subject.credits * 10 }} hrs</p>
+
+        {% if report %}
+        <table class="data-grid">
+            <thead>
+                <tr>
+                    <th width="30%">Student Name</th>
+                    <th width="15%">Semester</th>
+                    <th width="25%">Logged Hours</th>
+                    <th width="20%">Progress %</th>
+                    <th width="10%">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in report %}
+                {% set progress = student.progress_percentage | default(0.0) | round(1) %}
+                {% set progress_class = 'progress-high' if progress >= 80 else ('progress-low' if progress < 40 else 'progress-medium') %}
+                <tr>
+                    <td style="color: white; font-weight: 600;">{{ student.student_name }}</td>
+                    <td>{{ student.semester }}</td>
+                    <td>{{ student.total_logged_hours | default(0.0) | round(1) }} hrs</td>
+                    <td class="{{ progress_class }}">{{ progress }}%</td>
+                    <td>
+                        <a href="{{ url_for('mentor_feedback_history', student_id=student.student_id) }}" style="color: var(--neon-cyan); text-decoration: none;">
+                            <i class="fas fa-search"></i> Review
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <div class="empty-state">
+                NO STUDENTS CURRENTLY ASSOCIATED WITH THIS SUBJECT PROTOCOL VIA LOGS.
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
