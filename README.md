@@ -1,64 +1,68 @@
-EduMentor: The Ultimate Learning Companion
+EduMentor: Your Digital Study Partner
 
-Welcome to EduMentor, your digital study buddy that keeps you on track, organized, and constantly improving. Whether you're a student managing your study hours, a mentor providing insightful feedback, or a developer overseeing the system, EduMentor’s got your back. It's all about making your educational journey smoother and more efficient!
+EduMentor is a sleek and simple learning management system designed to keep students, mentors, and administrators organized and on track. By centralizing study sessions, progress, and feedback, it provides a seamless experience for everyone involved in the learning process.
 
 Key Features
 For Students:
 
-Study Tracking: Keep tabs on your study hours, monitor your progress, and see how much time you’re dedicating to each subject. It’s like having a personal study log, but better!
+Study Tracking: Log study hours and track your progress in real-time.
 
-Subject Analytics: Wondering where all your time is going? Visualize your study habits with beautiful, interactive charts. Who knew tracking progress could look this good?
+Goal Management: Set study goals and get updates on whether you’re on track.
 
-Goal Management: Set goals, track your progress, and get real-time updates to see if you’re hitting those targets. Stay motivated with clear, actionable milestones.
-
-Peer Communication: Need help or feedback? Chat with your mentors and classmates—because learning is better when we do it together!
+Peer Communication: Connect with mentors and classmates to share feedback and updates.
 
 For Mentors:
 
-Mentor Feedback: Provide structured, time-stamped feedback to guide students in the right direction. Your mentorship has never been this organized.
+Feedback System: Provide structured, time-stamped feedback to guide students.
 
-Progress Monitoring: Keep track of your students’ progress with easy-to-read reports. See how much they’ve learned and where they need more help.
+Progress Monitoring: Access reports to track student performance across subjects.
 
-Goal Setting: Help students set goals and cheer them on as they achieve them. It’s like being their personal academic coach.
+Goal Setting: Set and monitor academic goals for students to stay on track.
 
 For Developers:
 
-Subject Management: Add, remove, and manage subjects, ensuring everything is up-to-date and organized. It’s all about keeping the system fresh and ready for learning.
+Subject & Mentor Management: Add and manage subjects and mentors.
 
-Mentor Management: Have full control over mentor roles—add, update, or remove mentors as needed. Ensure students have the best guides on their educational path.
-
-Global Analytics Report: Get a bird’s-eye view of the entire system’s progress. Understand learning trends and spot areas for improvement with global reports.
+Global Analytics Report: View system-wide progress and trends for all students and subjects.
 
 Technologies Used:
 
-Backend Framework: Python (Flask) – Fast, reliable, and ready to handle all your server-side needs.
+Backend: Python (Flask)
 
-Database: MySQL – For storing all your data in an organized, secure way.
+Database: MySQL
 
-Frontend: HTML/CSS – The building blocks of a clean and functional interface.
+Frontend: HTML/CSS
 
-Data Visualization: Chart.js – Turning your data into stunning visualizations to help you track progress with style.
+Visualization: Chart.js
 
-Security: Password Hashing – Because your privacy matters.
+Security: Password hashing for user security
 
-Tools: XAMPP (Local server), VS Code (Your development powerhouse)
+Tools: XAMPP, VS Code
 
-Database Design
+Database Overview:
 
-EduMentor's database is like a well-oiled machine, connecting students, mentors, subjects, and more to create a seamless experience. Here’s how it works:
+EduMentor’s database connects students, mentors, subjects, and study sessions in a seamless system. Key tables track:
 
-Students: Tracks details like student ID, name, semester, email, and password. All linked to study sessions, progress, feedback, and goals. A student’s journey in one neat package.
+Students: Store basic info and track study sessions, progress, and goals.
 
-Mentors: Holds mentor info and connects them to student progress and feedback. Mentors help guide the way!
+Mentors: Store mentor details and connect them with student progress and feedback.
 
-Subjects: Lists subjects and credit hours. Used by students to log hours and by mentors for feedback.
+Study Sessions: Log all study sessions, including details like subject, date, and mentor.
 
-Study Sessions: Captures each study session—subject, mentor, date, duration. Because every study session counts!
+Mentor Feedback: Allows mentors to provide feedback on student progress.
 
-Mentor Feedback: Stores feedback from mentors, helping students improve.
+Student Progress: Track percentage-based progress for each subject.
 
-Student Progress: Tracks students’ academic achievements, with percentage progress across all subjects.
+Student Goals: Set and track goals like target study hours and deadlines.
 
-Student Goals: Tracks study hours and deadlines, ensuring students are working toward their academic milestones.
+Messages: Facilitates communication between students and mentors.
 
-Messages: Peer-to-peer communication between students and mentors. Stay in the loop and share feedback easily.
+How It Works:
+
+Students log study hours, track progress, and communicate with mentors.
+
+Mentors provide feedback, set goals, and monitor student performance.
+
+Developers manage system settings, like subjects and mentors, and generate global reports.
+
+EduMentor is all about making the learning experience more efficient and organized, so students and mentors can focus on what really matters—growth and progress!
